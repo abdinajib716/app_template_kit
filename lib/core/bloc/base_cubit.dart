@@ -22,7 +22,7 @@ abstract class BaseCubit<State extends BaseState> extends Cubit<State> {
     }
 
     final result = await operation();
-    
+
     result.fold(
       (failure) => emit(onFailure(failure)),
       (data) => emit(onSuccess(data)),
@@ -63,25 +63,23 @@ class GenericCubit<T> extends BaseCubit<GenericState<T>> {
   }
 
   void setSuccess(T data) {
-    emit(state.copyWith(
-      status: StateStatus.success,
-      data: data,
-      errorMessage: null,
-    ));
+    emit(
+      state.copyWith(
+        status: StateStatus.success,
+        data: data,
+        errorMessage: null,
+      ),
+    );
   }
 
   void setFailure(String error) {
-    emit(state.copyWith(
-      status: StateStatus.failure,
-      errorMessage: error,
-    ));
+    emit(state.copyWith(status: StateStatus.failure, errorMessage: error));
   }
 
   void setOfflineState() {
-    emit(state.copyWith(
-      isOffline: true,
-      errorMessage: 'No internet connection',
-    ));
+    emit(
+      state.copyWith(isOffline: true, errorMessage: 'No internet connection'),
+    );
   }
 
   void reset() {
@@ -103,16 +101,17 @@ abstract class PaginatedCubit<T> extends BaseCubit<PaginatedState<T>> {
     final result = await fetchData(1);
 
     result.fold(
-      (failure) => emit(state.copyWith(
-        status: StateStatus.failure,
-        errorMessage: failure,
-      )),
-      (items) => emit(state.copyWith(
-        status: StateStatus.success,
-        items: items,
-        currentPage: 1,
-        hasReachedMax: items.isEmpty,
-      )),
+      (failure) => emit(
+        state.copyWith(status: StateStatus.failure, errorMessage: failure),
+      ),
+      (items) => emit(
+        state.copyWith(
+          status: StateStatus.success,
+          items: items,
+          currentPage: 1,
+          hasReachedMax: items.isEmpty,
+        ),
+      ),
     );
   }
 
@@ -126,16 +125,20 @@ abstract class PaginatedCubit<T> extends BaseCubit<PaginatedState<T>> {
     final result = await fetchData(nextPage);
 
     result.fold(
-      (failure) => emit(state.copyWith(
-        status: StateStatus.success, // Keep showing existing data
-        errorMessage: failure,
-      )),
-      (items) => emit(state.copyWith(
-        status: StateStatus.success,
-        items: [...state.items, ...items],
-        currentPage: nextPage,
-        hasReachedMax: items.isEmpty,
-      )),
+      (failure) => emit(
+        state.copyWith(
+          status: StateStatus.success, // Keep showing existing data
+          errorMessage: failure,
+        ),
+      ),
+      (items) => emit(
+        state.copyWith(
+          status: StateStatus.success,
+          items: [...state.items, ...items],
+          currentPage: nextPage,
+          hasReachedMax: items.isEmpty,
+        ),
+      ),
     );
   }
 
@@ -146,16 +149,17 @@ abstract class PaginatedCubit<T> extends BaseCubit<PaginatedState<T>> {
     final result = await fetchData(1);
 
     result.fold(
-      (failure) => emit(state.copyWith(
-        status: StateStatus.failure,
-        errorMessage: failure,
-      )),
-      (items) => emit(state.copyWith(
-        status: StateStatus.success,
-        items: items,
-        currentPage: 1,
-        hasReachedMax: items.isEmpty,
-      )),
+      (failure) => emit(
+        state.copyWith(status: StateStatus.failure, errorMessage: failure),
+      ),
+      (items) => emit(
+        state.copyWith(
+          status: StateStatus.success,
+          items: items,
+          currentPage: 1,
+          hasReachedMax: items.isEmpty,
+        ),
+      ),
     );
   }
 }

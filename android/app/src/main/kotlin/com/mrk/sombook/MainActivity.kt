@@ -1,4 +1,4 @@
-package com.example.app_kit
+package com.mrk.sombook
 
 import io.flutter.embedding.android.FlutterActivity
 

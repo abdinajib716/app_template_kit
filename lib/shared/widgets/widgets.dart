@@ -1,6 +1,6 @@
 /// Shared Widgets Export File
 /// Import this file to access all shared widgets
-/// 
+///
 /// Usage:
 /// import 'package:your_app/shared/widgets/widgets.dart';
 

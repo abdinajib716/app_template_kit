@@ -1,13 +1,22 @@
-/// Core Exports
-/// Import this file to access all core utilities
-/// 
-/// Usage:
-import 'package:app_kit/core/core.dart';
+// Core exports. Import this file to access all core utilities:
+// import 'package:sombook/core/core.dart';
 
 // Constants
 export 'constants/app_colors.dart';
 export 'constants/app_text_styles.dart';
 export 'constants/app_constants.dart';
+
+// Configuration
+export 'config/config.dart';
+
+// API
+export 'api/api.dart';
+
+// Dependency Injection
+export 'di/di.dart';
+
+// Storage
+export 'storage/storage.dart';
 
 // Theme
 export 'theme/theme.dart';

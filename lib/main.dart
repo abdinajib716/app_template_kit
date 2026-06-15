@@ -8,22 +8,9 @@ import 'core/core.dart';
 // Widget imports
 import 'shared/widgets/widgets.dart';
 
-/// Global instances
-late ConnectivityCubit connectivityCubit;
-late ThemeProvider themeProvider;
-
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-
-  // Initialize Network Info
-  final networkInfo = NetworkInfoImpl();
-  
-  // Initialize Connectivity Cubit
-  connectivityCubit = ConnectivityCubit(networkInfo: networkInfo);
-  
-  // Initialize Theme Provider
-  themeProvider = ThemeProvider();
-  await themeProvider.init();
+  await setupDependencies();
 
   runApp(const MyApp());
 }
@@ -33,6 +20,9 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final connectivityCubit = getIt<ConnectivityCubit>();
+    final themeProvider = getIt<ThemeProvider>();
+
     return MultiBlocProvider(
       providers: [
         // Connectivity Cubit - For offline/online UI
@@ -42,14 +32,14 @@ class MyApp extends StatelessWidget {
         listenable: themeProvider,
         builder: (context, _) {
           return MaterialApp(
-            title: 'Flutter UI Kit',
+            title: 'SomBook',
             debugShowCheckedModeBanner: false,
-            
+
             // Theme configuration
             theme: AppTheme.lightTheme,
             darkTheme: AppTheme.darkTheme,
             themeMode: themeProvider.effectiveThemeMode,
-            
+
             home: const ExampleHomePage(),
           );
         },
@@ -74,6 +64,8 @@ class _ExampleHomePageState extends State<ExampleHomePage> {
 
   @override
   Widget build(BuildContext context) {
+    final themeProvider = getIt<ThemeProvider>();
+
     return Scaffold(
       // Wrap with connectivity status to show offline banner
       body: ConnectivityStatusWidget(
@@ -88,17 +80,17 @@ class _ExampleHomePageState extends State<ExampleHomePage> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 // Header
-                Text('UI Kit Demo', style: AppTextStyles.h1),
+                Text('SomBook', style: AppTextStyles.h1),
                 const SizedBox(height: 8),
                 Text(
-                  'All reusable components',
+                  'Mobile app foundation',
                   style: AppTextStyles.bodyMedium.copyWith(
                     color: AppColors.textSecondary,
                   ),
                 ),
-                
+
                 const SizedBox(height: 32),
-                
+
                 // Connectivity Status
                 _buildSection('Connectivity Status'),
                 BlocBuilder<ConnectivityCubit, ConnectivityState>(
@@ -109,8 +101,8 @@ class _ExampleHomePageState extends State<ExampleHomePage> {
                           width: 12,
                           height: 12,
                           decoration: BoxDecoration(
-                            color: state.isConnected 
-                                ? AppColors.success 
+                            color: state.isConnected
+                                ? AppColors.success
                                 : AppColors.error,
                             shape: BoxShape.circle,
                           ),
@@ -124,9 +116,9 @@ class _ExampleHomePageState extends State<ExampleHomePage> {
                     );
                   },
                 ),
-                
+
                 const SizedBox(height: 24),
-                
+
                 // Theme Toggle
                 _buildSection('Theme'),
                 Row(
@@ -140,9 +132,9 @@ class _ExampleHomePageState extends State<ExampleHomePage> {
                     ),
                   ],
                 ),
-                
+
                 const SizedBox(height: 24),
-                
+
                 // Buttons Section
                 _buildSection('Buttons'),
                 CustomButton(
@@ -169,13 +161,10 @@ class _ExampleHomePageState extends State<ExampleHomePage> {
                   isLoading: _isLoading,
                 ),
                 const SizedBox(height: 12),
-                CustomButton(
-                  text: 'Disabled Button',
-                  onPressed: null,
-                ),
-                
+                CustomButton(text: 'Disabled Button', onPressed: null),
+
                 const SizedBox(height: 24),
-                
+
                 // Text Fields Section
                 _buildSection('Text Fields'),
                 CustomTextField(
@@ -192,12 +181,10 @@ class _ExampleHomePageState extends State<ExampleHomePage> {
                   obscureText: true,
                 ),
                 const SizedBox(height: 16),
-                const SearchTextField(
-                  hintText: 'Search...',
-                ),
-                
+                const SearchTextField(hintText: 'Search...'),
+
                 const SizedBox(height: 24),
-                
+
                 // Loading Indicators
                 _buildSection('Loading Indicators'),
                 const Row(
@@ -217,21 +204,24 @@ class _ExampleHomePageState extends State<ExampleHomePage> {
                     ShimmerCircle(size: 40),
                   ],
                 ),
-                
+
                 const SizedBox(height: 100), // Space for bottom nav
               ],
             ),
           ),
         ),
       ),
-      
+
       // Bottom Navigation Bar
       bottomNavigationBar: BottomNavBar(
         currentIndex: _currentNavIndex,
         onTap: (index) => setState(() => _currentNavIndex = index),
         items: const [
           BottomNavItem(icon: IconsaxPlusLinear.home_1, label: 'Home'),
-          BottomNavItem(icon: IconsaxPlusLinear.search_normal_1, label: 'Search'),
+          BottomNavItem(
+            icon: IconsaxPlusLinear.search_normal_1,
+            label: 'Search',
+          ),
           BottomNavItem(icon: IconsaxPlusLinear.heart, label: 'Favorites'),
           BottomNavItem(icon: IconsaxPlusLinear.profile, label: 'Profile'),
         ],
@@ -242,10 +232,7 @@ class _ExampleHomePageState extends State<ExampleHomePage> {
   Widget _buildSection(String title) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 12),
-      child: Text(
-        title,
-        style: AppTextStyles.h2,
-      ),
+      child: Text(title, style: AppTextStyles.h2),
     );
   }
 }

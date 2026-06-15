@@ -51,43 +51,43 @@ abstract class BaseBloc<Event extends BaseEvent, State extends BaseState>
 }
 
 /// Example: How to create a BLoC for business logic
-/// 
+///
 /// // Events
 /// abstract class UserEvent extends BaseEvent {}
-/// 
+///
 /// class LoadUser extends UserEvent {
 ///   final String userId;
 ///   LoadUser(this.userId);
 /// }
-/// 
+///
 /// class UpdateUser extends UserEvent {
 ///   final User user;
 ///   UpdateUser(this.user);
 /// }
-/// 
+///
 /// // State
 /// class UserState extends BaseState {
 ///   final User? user;
-///   
+///
 ///   const UserState({
 ///     super.status,
 ///     super.errorMessage,
 ///     super.isOffline,
 ///     this.user,
 ///   });
-///   
+///
 ///   UserState copyWith({...}) => UserState(...);
 /// }
-/// 
+///
 /// // BLoC
 /// class UserBloc extends BaseBloc<UserEvent, UserState> {
 ///   final UserRepository _repository;
-///   
+///
 ///   UserBloc(this._repository) : super(const UserState()) {
 ///     on<LoadUser>(_onLoadUser);
 ///     on<UpdateUser>(_onUpdateUser);
 ///   }
-///   
+///
 ///   Future<void> _onLoadUser(LoadUser event, Emitter<UserState> emit) async {
 ///     await executeEither(
 ///       operation: () => _repository.getUser(event.userId),

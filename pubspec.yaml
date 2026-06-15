@@ -1,5 +1,5 @@
-name: app_kit
-description: "Reusable Flutter UI Kit Template - Buttons, Colors, Fonts, Widgets"
+name: sombook
+description: "SomBook mobile application"
 publish_to: 'none'
 version: 1.0.0
 
@@ -15,15 +15,18 @@ dependencies:
   equatable: ^2.0.5
   dartz: ^0.10.1
   
-  # Network & Connectivity
+  # Network, API & Connectivity
   connectivity_plus: ^7.0.0
   internet_connection_checker: ^1.0.0+1
+  dio: ^5.9.2
   
   # Navigation
   go_router: ^13.0.0
   
-  # Storage
+  # Storage & Dependency Injection
   shared_preferences: ^2.5.3
+  flutter_secure_storage: ^10.3.1
+  get_it: ^9.2.1
   
   # UI Components
   shimmer: ^3.0.0
